@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,6 +44,7 @@ public class Main {
                     break;
                 case "exit":
                     System.out.println(ConsoleColors.RED + "Bye, bye!");
+                    writeToFile();
                     return;
                 default:
                     System.out.println("Please select a correct option.");
@@ -111,17 +114,43 @@ public class Main {
             return;
         }
 
-        tasks = Arrays.copyOf(tasks, tasks.length - 1);
+        String[][] newTasks = new String[tasks.length - 1][];
 
         int index = 0;
         for (int i = 0; i < tasks.length; i++) {
             if (i == removeTask) {
                 continue; // Pomijamy zadanie do usunięcia
             }
-            tasks[index] = tasks[i];
+            newTasks[index] = tasks[i];
             index++;
         }
+        tasks = newTasks;
         System.out.println("Value was successfully deleted.");
 
+    }
+
+
+    public static void writeToFile() {
+        Path path1 = Paths.get("/Users/ktrzonek/Workshop 1/tasks1.csv");
+        List<String> finalTasks = new ArrayList<>();
+
+        for (int i = 0; i < tasks.length; i++) {
+            StringBuilder row = new StringBuilder();
+
+            for (int j = 0; j < tasks[i].length; j++) {
+                row.append(tasks[i][j]);
+
+                if (j < tasks[i].length - 1) {
+                    row.append(",");
+                }
+            }
+            finalTasks.add(row.toString());
+        }
+
+        try {
+            Files.write(path1, finalTasks);
+        } catch (IOException ex) {
+            System.out.println("Cannot write to file.");
+        }
     }
 }
