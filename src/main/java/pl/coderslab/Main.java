@@ -17,32 +17,36 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("Please select an option:");
-        String[] options = {"add", "remove", "list", "exit"};
-        for (String option : options) {
-            System.out.println(option);
-        }
         csvReading();
-        
-        Scanner scan = new Scanner(System.in);
-        String input = scan.nextLine();
-        switch (input) {
-            case "add":
-                addTask();
-                break;
-            case "list":
-                listTasks();
-                break;
-            case "remove":
-                removeTask();
-                break;
-            case "exit":
-                System.out.println("Bye, bye!");
-//                System.exit(0);
-                return;
-            default:
-                System.out.println("Please select a correct option.");
 
+        while (true) { // while true żeby pętla działała do momentu wpisania exit
+            System.out.println("\n");
+            System.out.println(ConsoleColors.BLUE + "Please select an option:" + ConsoleColors.RESET);
+            String[] options = {"add", "remove", "list", "exit"};
+            for (String option : options) {
+                System.out.println(option);
+            }
+
+            Scanner scan = new Scanner(System.in);
+            String input = scan.nextLine();
+            System.out.println(ConsoleColors.GREEN_BOLD + input + ConsoleColors.RESET);
+            switch (input) {
+                case "add":
+                    addTask();
+                    break;
+                case "list":
+                    listTasks();
+                    break;
+                case "remove":
+                    removeTask();
+                    break;
+                case "exit":
+                    System.out.println(ConsoleColors.RED + "Bye, bye!");
+                    return;
+                default:
+                    System.out.println("Please select a correct option.");
+
+            }
         }
     }
 
@@ -52,7 +56,7 @@ public class Main {
 
         List<String> rows = null; //podzielony na linie
         try {
-            rows = Files.readAllLines(file.toPath());
+            rows = Files.readAllLines(file.toPath()); //podzielony na linie
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -73,7 +77,7 @@ public class Main {
         String[] newRow = new String[3];
         newRow[0] = newTask;
 
-        System.out.println("Please add task due date");
+        System.out.println("Please add task due date YYYY-MM-DD");
         Scanner scanDue = new Scanner(System.in);
         String dueDate = scanDue.nextLine();
         newRow[1] = dueDate;
@@ -84,8 +88,6 @@ public class Main {
         newRow[2] = isImportant;
 
         tasks[tasks.length - 1] = newRow;
-
-
     }
 
     public static void listTasks() {
@@ -121,24 +123,5 @@ public class Main {
         }
         System.out.println("Value was successfully deleted.");
 
-
-
-
-        //sprawdzanie poprawnosci tablicy
-//        for (int i = 0; i < tasks.length; i++) {
-//            System.out.println();
-//            System.out.print(i + " : ");
-//            for (int j = 0; j < tasks[i].length; j++) {
-//                System.out.print(tasks[i][j] + " ");
-//            }
-//        }
-
-
     }
-
-
-
-
-
-
 }
